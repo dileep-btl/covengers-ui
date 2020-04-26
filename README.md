@@ -10,7 +10,7 @@
 
 Quick start options:
 
-- Clone the repo: `git clone https://github.com/creativetimofficial/light-bootstrap-dashboard-react.git`.
+- Clone the repo: `git clone https://github.com/dileep-btl/covengers-ui.git`.
 - npm install
 - npm start
 
