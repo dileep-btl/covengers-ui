@@ -679,7 +679,10 @@ var covengersData = {
 };
 
 var BASE_URL = "http://3.134.99.156";
+var DASHBOARD_API = BASE_URL + "/dashboard";
+var DASHBOARD_DETAIL_API = BASE_URL + "/dashboarddetail";
 var PREDICT_API = BASE_URL + "/predict";
+var CORRELATION_API = BASE_URL + "/correlation";
 
 module.exports = {
   style, // For notifications (App container and Notifications view)
@@ -698,5 +701,8 @@ module.exports = {
   legendBar, // For charts (Dashboard view)
   covengersData,
   BASE_URL,
-  PREDICT_API
+  PREDICT_API,
+  CORRELATION_API,
+  DASHBOARD_API,
+  DASHBOARD_DETAIL_API
 };

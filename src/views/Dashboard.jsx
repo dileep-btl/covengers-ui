@@ -1,10 +1,18 @@
 import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
-import { Grid, Row, Col, ButtonGroup, Button } from "react-bootstrap";
+import {
+  Grid,
+  Row,
+  Col,
+  ButtonGroup,
+  Button,
+  ButtonToolbar
+} from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { optionsBar, responsiveBar } from "variables/Variables.jsx";
+import { DASHBOARD_API, DASHBOARD_DETAIL_API } from "variables/Variables.jsx";
 
 class Dashboard extends Component {
   constructor(props) {
@@ -36,10 +44,11 @@ class Dashboard extends Component {
       //Drug Response Data
       countryResponseData: {}
     };
+    this.handleFilter = this.handleFilter.bind(this);
   }
 
   async componentDidMount() {
-    const url_drugstats = "http://3.134.99.156/dashboard";
+    const url_drugstats = DASHBOARD_API;
     const response = await fetch(url_drugstats);
     const data = await response.json();
     //console.log(data);
@@ -50,7 +59,7 @@ class Dashboard extends Component {
       // body: JSON.stringify({ drug: "all" })
       body: JSON.stringify({ drug: this.state.defaultFilter })
     };
-    const url_dashboarddetail = "http://3.134.99.156/dashboarddetail";
+    const url_dashboarddetail = DASHBOARD_DETAIL_API;
     const response_dashboarddetail = await fetch(
       url_dashboarddetail,
       requestOptions
@@ -77,6 +86,50 @@ class Dashboard extends Component {
 
       //Set Drug Distribution Data
       drugUsage: data.responseString.drugUse,
+
+      //Set Age Distribution Data
+      ageDistributionData: data_dashboarddetail.responseString.ageGroup,
+
+      //Set Gender Distribution Data
+      genderDistributionData: data_dashboarddetail.responseString.gender,
+
+      //Set Gender Distribution Data
+      drugResponseData: data_dashboarddetail.responseString.ventilator,
+
+      //Set Gender Distribution Data
+      countryResponseData: {
+        labels: data_dashboarddetail.responseString.country.legend,
+        series: [data_dashboarddetail.responseString.country.series]
+      }
+    });
+
+    //console.log(this.state.countryResponseData);
+  }
+
+  async handleFilter(event) {
+    //alert(event.target.name);
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // body: JSON.stringify({ drug: "all" })
+      body: JSON.stringify({ drug: event.target.name })
+    };
+
+    console.log(JSON.stringify({ drug: event.target.name }));
+    const url_dashboarddetail = "http://3.134.99.156/dashboarddetail";
+    const response_dashboarddetail = await fetch(
+      url_dashboarddetail,
+      requestOptions
+    );
+
+    const data_dashboarddetail = await response_dashboarddetail.json();
+    console.log(JSON.stringify(data_dashboarddetail));
+
+    this.setState({
+      isLoaded: true,
+
+      //dashboardData: data.responseString,
 
       //Set Age Distribution Data
       ageDistributionData: data_dashboarddetail.responseString.ageGroup,
@@ -192,13 +245,55 @@ class Dashboard extends Component {
                 </div>
               </Col>
               <Col md={7}>
-                <ButtonGroup aria-label="Basic example">
-                  <Button variant="secondary">All</Button>
-                  <Button variant="secondary">Chloroquin</Button>
-                  <Button variant="secondary">Remdisivir</Button>
-                  <Button variant="secondary">Favilavir</Button>
-                  <Button variant="secondary">Plasma</Button>
-                </ButtonGroup>
+                <ButtonToolbar aria-label="Filter by Drug">
+                  <ButtonGroup
+                    bsStyle="warning"
+                    size="lg"
+                    className="mr-2"
+                    aria-label="Filter by Drug"
+                  >
+                    <Button
+                      name="all"
+                      bsStyle="default"
+                      type="submit"
+                      onClick={this.handleFilter}
+                    >
+                      All
+                    </Button>
+                    <Button
+                      name="chloroquin"
+                      bsStyle="default"
+                      type="submit"
+                      onClick={this.handleFilter}
+                    >
+                      Chloroquin
+                    </Button>
+                    <Button
+                      name="remdisivir"
+                      bsStyle="default"
+                      type="submit"
+                      onClick={this.handleFilter}
+                    >
+                      Remdisivir
+                    </Button>
+                    <Button
+                      name="favilavir"
+                      bsStyle="default"
+                      type="submit"
+                      onClick={this.handleFilter}
+                    >
+                      Favilavir
+                    </Button>
+                    <Button
+                      name="plasma"
+                      bsStyle="default"
+                      type="submit"
+                      onClick={this.handleFilter}
+                    >
+                      Plasma
+                    </Button>
+                  </ButtonGroup>
+                </ButtonToolbar>
               </Col>
             </Row>
             <br />

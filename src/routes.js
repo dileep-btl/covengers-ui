@@ -1,6 +1,6 @@
 import Dashboard from "views/Dashboard.jsx";
 import Recommendations from "views/Recommendations.jsx";
-import UserProfile from "views/UserProfile.jsx";
+import Insights from "views/Insights.jsx";
 import TableList from "views/TableList.jsx";
 import Typography from "views/Typography.jsx";
 import Icons from "views/Icons.jsx";
@@ -27,7 +27,7 @@ const dashboardRoutes = [
     path: "/insights",
     name: "Insights",
     icon: "pe-7s-user",
-    component: UserProfile,
+    component: Insights,
     layout: "/admin"
   }
   /*,
