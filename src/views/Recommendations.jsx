@@ -1,31 +1,163 @@
 import React, { Component } from "react";
-import {
-  Grid,
-  Row,
-  Col,
-  FormGroup,
-  ControlLabel,
-  FormControl
-} from "react-bootstrap";
+import ChartistGraph from "react-chartist";
+import { Grid, Row, Col } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
-import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
-import avatar from "assets/img/faces/face-3.jpg";
+import { PREDICT_API } from "variables/Variables.jsx";
+import { optionsBar, responsiveBar } from "variables/Variables.jsx";
 
 class Recommendations extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoaded: false,
+      age: 0,
+      sugar: "",
+      weight: "",
+      cough: 0,
+      cold: 0,
+      fever: 0,
+      sorethroat: 0,
+      bodyache: 0,
+      fatigue: 0,
+      bcg: 0,
+      bp: 0,
+      g6pd: 0,
+      icu: 0,
+      ventilator: 0,
+      chloroquin: 0,
+      remdisivir: 0,
+      favilavir: 0,
+      plasma: 0,
+      country: "",
+      gender: "",
+      insightsHeaders: [],
+      insightsValues: [],
+      drugRecommendations: {}
+    };
+  }
+
+  handleDataChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  handleCheckboxChange(event) {
+    const isChecked = event.target.checked;
+    // alert(isChecked);
+
+    if (isChecked) {
+      this.setState({ [event.target.name]: 1 });
+    } else {
+      this.setState({ [event.target.name]: 0 });
+    }
+  }
+
+  async componentDidMount() {
+    this.setState({
+      isLoaded: true,
+      //dashboardData: data.responseString,
+
+      age: "",
+      sugar: "",
+      weight: "",
+      cough: 0,
+      cold: 0,
+      fever: 0,
+      sorethroat: 0,
+      bodyache: 0,
+      fatigue: 0,
+      bcg: 0,
+      bp: 0,
+      g6pd: 0,
+      icu: 0,
+      ventilator: 0,
+      chloroquin: 0,
+      remdisivir: 0,
+      favilavir: 0,
+      plasma: 0,
+      country: "",
+      gender: "",
+      insightsHeaders: [],
+      insightsValues: [],
+      drugRecommendations: {}
+    });
+
+    //alert("component mounted");
+  }
+
+  async handleSubmit(event) {
+    //console.log(this.state);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([
+        {
+          age: this.state.age,
+          sugar: this.state.sugar,
+          weight: this.state.weight,
+          cough: this.state.cough,
+          cold: this.state.cough,
+          fever: this.state.fever,
+          sorethroat: this.state.sorethroat,
+          bodyache: this.state.bodyache,
+          fatigue: this.state.fatigue,
+          bcg: this.state.bcg,
+          bp: this.state.bp,
+          g6pd: this.state.g6pd,
+          icu: this.state.icu,
+          ventilator: this.state.ventilator,
+          chloroquin: this.state.chloroquin,
+          remdisivir: this.state.remdisivir,
+          favilavir: this.state.favilavir,
+          plasma: this.state.plasma,
+          country: this.state.country,
+          gender: this.state.gender
+        }
+      ])
+    };
+
+    const url_recommendation = PREDICT_API;
+
+    //For Local Testing
+    //const url_recommendation = "http://127.0.0.1:12345/predict";
+
+    const response_recommendation = await fetch(
+      url_recommendation,
+      requestOptions
+    );
+    const data_recommendation = await response_recommendation.json();
+    console.log(data_recommendation.responseString.values);
+
+    this.setState({
+      insightsHeaders: data_recommendation.responseString.labels,
+      insightsValues: [data_recommendation.responseString.values],
+      drugRecommendations: {
+        labels: data_recommendation.responseString.labels,
+        series: [data_recommendation.responseString.values]
+      }
+    });
+  }
+
   render() {
-    return (
-      <div className="content">
-        <Grid fluid>
-          <Row>
-            <Col md={12}>
-              <Card
-                title="Patient Details"
-                content={
-                  <form>
+    var { isLoaded } = this.state;
+
+    if (!isLoaded) {
+      return (
+        <div>
+          <i>Loading...</i>
+        </div>
+      );
+    } else {
+      return (
+        <div className="content">
+          <Grid fluid>
+            <Row>
+              <Col md={8}>
+                <Card
+                  title="Patient Details"
+                  content={
                     <FormInputs
                       ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
@@ -34,208 +166,222 @@ class Recommendations extends Component {
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "Age",
-                          defaultValue: ""
+                          defaultValue: this.state.age,
+                          name: "age",
+                          onChange: this.handleDataChange.bind(this)
                         },
                         {
                           label: "Country",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
-                          defaultValue: ""
+                          defaultValue: this.state.country,
+                          name: "country",
+                          onChange: this.handleDataChange.bind(this)
                         },
                         {
                           label: "Gender",
-                          type: "text",
+                          type: "select",
                           bsClass: "form-control",
                           placeholder: "Gender",
-                          defaultValue: ""
+                          defaultValue: this.state.gender,
+                          name: "gender",
+                          onChange: this.handleDataChange.bind(this)
                         },
                         {
                           label: "Weight (Pounds)",
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "",
-                          defaultValue: ""
+                          defaultValue: this.state.weight,
+                          name: "weight",
+                          onChange: this.handleDataChange.bind(this)
                         }
                       ]}
                     />
-                    <div className="clearfix" />
-                  </form>
-                }
-              />
-              <Card
-                title="Medical Condition"
-                content={
-                  <form>
+                  }
+                />
+                <Card
+                  title="Health Records"
+                  content={
                     <FormInputs
-                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
+                      ncols={[
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4",
+                        "col-md-4"
+                      ]}
                       properties={[
                         {
-                          label: "Name",
+                          label: "Sugar",
                           type: "text",
                           bsClass: "form-control",
-                          placeholder: "Patient Name",
-                          defaultValue: "Tom Hanks"
+                          placeholder: "Sugar",
+                          defaultValue: this.state.sugar,
+                          name: "sugar",
+                          onChange: this.handleDataChange.bind(this)
                         },
                         {
-                          label: "Age",
-                          type: "number",
+                          label: "G6PD",
+                          type: "checkbox",
                           bsClass: "form-control",
                           placeholder: "Age",
-                          defaultValue: ""
+                          defaultValue: this.state.age,
+                          name: "g6pd",
+                          onChange: this.handleCheckboxChange.bind(this)
                         },
                         {
-                          label: "Gender",
-                          type: "text",
+                          label: "High Blood Pressure",
+                          type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Gender",
-                          defaultValue: ""
+                          placeholder: "High Blood Pressure",
+                          defaultValue: this.state.bp,
+                          name: "bp",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Cough",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Cough",
+                          defaultValue: this.state.cough,
+                          name: "cough",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Cold",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Cold",
+                          defaultValue: this.state.cold,
+                          name: "cold",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Fever",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Fever",
+                          defaultValue: this.state.fever,
+                          name: "fever",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Sore Throat",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Sore Throat",
+                          defaultValue: this.state.sorethroat,
+                          name: "sorethroat",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Bodyache",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Bodyache",
+                          defaultValue: this.state.bodyache,
+                          name: "bodyache",
+                          onChange: this.handleCheckboxChange.bind(this)
+                        },
+                        {
+                          label: "Fatigue",
+                          type: "checkbox",
+                          bsClass: "form-control",
+                          placeholder: "Fatigue",
+                          defaultValue: this.state.fatigue,
+                          name: "fatigue",
+                          onChange: this.handleCheckboxChange.bind(this)
                         }
                       ]}
                     />
+                  }
+                />
+                <Card
+                  title="Treatments"
+                  content={
                     <FormInputs
                       ncols={["col-md-4", "col-md-4", "col-md-4"]}
                       properties={[
                         {
-                          label: "City",
-                          type: "text",
+                          label: "BCG",
+                          type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "City",
-                          defaultValue: ""
+                          placeholder: "BCG",
+                          defaultValue: this.state.bcg,
+                          name: "bcg",
+                          onChange: this.handleCheckboxChange.bind(this)
                         },
                         {
-                          label: "State",
-                          type: "text",
+                          label: "ICU",
+                          type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "State",
-                          defaultValue: ""
+                          placeholder: "ICU",
+                          defaultValue: this.state.icu,
+                          name: "icu",
+                          onChange: this.handleCheckboxChange.bind(this)
                         },
                         {
-                          label: "Country",
-                          type: "text",
+                          label: "Ventilator",
+                          type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Country",
-                          defaultValue: ""
+                          placeholder: "Ventlator",
+                          defaultValue: this.state.ventilator,
+                          name: "ventilator",
+                          onChange: this.handleCheckboxChange.bind(this)
                         }
                       ]}
                     />
-                    <div className="clearfix" />
-                  </form>
-                }
-              />
-              <Card
-                title="Input Patient Details"
-                content={
-                  <form>
-                    <FormInputs
-                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
-                      properties={[
-                        {
-                          label: "Name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Patient Name",
-                          defaultValue: "Tom Hanks"
-                        },
-                        {
-                          label: "Username",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Username",
-                          defaultValue: "michael23"
-                        },
-                        {
-                          label: "Email address",
-                          type: "email",
-                          bsClass: "form-control",
-                          placeholder: "Email"
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-6", "col-md-6"]}
-                      properties={[
-                        {
-                          label: "First name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "First name",
-                          defaultValue: "Mike"
-                        },
-                        {
-                          label: "Last name",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Last name",
-                          defaultValue: "Andrew"
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-12"]}
-                      properties={[
-                        {
-                          label: "Adress",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Home Adress",
-                          defaultValue:
-                            "Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
-                        }
-                      ]}
-                    />
-                    <FormInputs
-                      ncols={["col-md-4", "col-md-4", "col-md-4"]}
-                      properties={[
-                        {
-                          label: "City",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "City",
-                          defaultValue: "Mike"
-                        },
-                        {
-                          label: "Country",
-                          type: "text",
-                          bsClass: "form-control",
-                          placeholder: "Country",
-                          defaultValue: "Andrew"
-                        },
-                        {
-                          label: "Postal Code",
-                          type: "number",
-                          bsClass: "form-control",
-                          placeholder: "ZIP Code"
-                        }
-                      ]}
-                    />
-
-                    <Row>
-                      <Col md={12}>
-                        <FormGroup controlId="formControlsTextarea">
-                          <ControlLabel>About Me</ControlLabel>
-                          <FormControl
-                            rows="5"
-                            componentClass="textarea"
-                            bsClass="form-control"
-                            placeholder="Here can be your description"
-                            defaultValue="Lamborghini Mercy, Your chick she so thirsty, I'm in that two seat Lambo."
+                  }
+                />
+                <Button
+                  bsStyle="info"
+                  pullRight
+                  fill
+                  type="submit"
+                  onClick={() => {
+                    this.handleSubmit();
+                  }}
+                >
+                  Get Insights
+                </Button>
+                <div className="clearfix" />
+              </Col>
+              <Col md={4}>
+                <Row>
+                  <Col md={12}>
+                    <Card
+                      statsIcon="fa"
+                      title="Drug Efficacy Score"
+                      category="Drug recommendations"
+                      //stats="Campaign sent 2 days ago"
+                      content={
+                        <div
+                          id="covengersBarChartPreferences"
+                          className="ct-chart"
+                        >
+                          <ChartistGraph
+                            data={this.state.drugRecommendations}
+                            type="Bar"
+                            options={optionsBar}
+                            responsiveOptions={responsiveBar}
                           />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Button bsStyle="info" pullRight fill type="submit">
-                      Update Profile
-                    </Button>
-                    <div className="clearfix" />
-                  </form>
-                }
-              />
-            </Col>
-          </Row>
-        </Grid>
-      </div>
-    );
+                        </div>
+                      }
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </Grid>
+        </div>
+      );
+    }
   }
 }
 

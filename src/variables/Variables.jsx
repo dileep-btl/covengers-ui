@@ -1,25 +1,3 @@
-/*!
-
-=========================================================
-* Light Bootstrap Dashboard React - v1.3.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/light-bootstrap-dashboard-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/light-bootstrap-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-//
-// //
-// // // For notifications
-// //
-//
 var defaultWidth =
   window.screen.width > 768
     ? (window.screen.width * 1) / 3
@@ -266,8 +244,8 @@ var style = {
 // // // For tables
 // //
 //
-const thArray = ["ID", "Name", "Salary", "Country", "City"];
-const tdArray = [
+const thArray1 = ["ID", "Name", "Salary", "Country", "City"];
+const tdArray2 = [
   ["1", "Dakota Rice", "$36,738", "Niger", "Oud-Turnhout"],
   ["2", "Minerva Hooper", "$23,789", "Curaçao", "Sinaai-Waas"],
   ["3", "Sage Rodriguez", "$56,142", "Netherlands", "Baileux"],
@@ -275,6 +253,10 @@ const tdArray = [
   ["5", "Doris Greene", "$63,542", "Malawi", "Feldkirchen in Kärnten"],
   ["6", "Mason Porter", "$78,615", "Chile", "Gloucester"]
 ];
+
+const thArray = ["Chloroquin", "Remdisivir", "Favilavir", "Plasma"];
+
+const tdArray = [[21.77, 11.75, 0.8, -7.0]];
 
 //
 // //
@@ -598,37 +580,16 @@ var legendBar = {
   types: ["info", "danger"]
 };
 
-
 // Data for Covengers Pie Chart
 var covengersData = {
-    "ageGroup": {
-      "labels": [
-        "10%",
-        "30%",
-        "20%",
-        "40%"
-      ],
-      "series": [
-        10,
-        30,
-        20,
-        40
-      ],
-      "names": [
-        "0-18",
-        "18-40",
-        "40-60",
-        ">60"
-      ],
-      "types": [ 
-        "danger",
-        "warning",
-        "info",
-        ""
-      ]
-    },
-    "country": {
-      /*
+  ageGroup: {
+    labels: ["10%", "30%", "20%", "40%"],
+    series: [10, 30, 20, 40],
+    names: ["0-18", "18-40", "40-60", ">60"],
+    types: ["danger", "warning", "info", ""]
+  },
+  country: {
+    /*
       "labels1": [
         5.165493189445285,
         5.306968480621175,
@@ -652,30 +613,31 @@ var covengersData = {
         5.306968480621175,
         5.3398697111271956
       ], */
-      "labels": [
-        "Australia",
-        "Brazil",
-        "Canada",
-        "China",
-        "Denmark",
-        "Estonia",
-        "Finland",
-        "France",
-        "Germany",
-        "India",
-        "Italy",
-        "Japan",
-        "Netherlands",
-        "New Zealand",
-        "Norway",
-        "South Africa",
-        "Spain",
-        "Sweden",
-        "Switzerland",
-        "United Kingdom",
-        "United States"
-      ],
-      "series": [[
+    labels: [
+      "Australia",
+      "Brazil",
+      "Canada",
+      "China",
+      "Denmark",
+      "Estonia",
+      "Finland",
+      "France",
+      "Germany",
+      "India",
+      "Italy",
+      "Japan",
+      "Netherlands",
+      "New Zealand",
+      "Norway",
+      "South Africa",
+      "Spain",
+      "Sweden",
+      "Switzerland",
+      "United Kingdom",
+      "United States"
+    ],
+    series: [
+      [
         3140,
         3226,
         3060,
@@ -697,43 +659,27 @@ var covengersData = {
         3234,
         3226,
         3246
-      ]]
-      ,
-      names: ["Tesla Model S", "BMW 5 Series"],
-      types: ["info", "danger"]
-      
-    },
-    "gender": {
-      "labels": [
-        49,
-        51
-      ],
-      "series": [
-        30139,
-        30649
-      ],
-      "names": [
-        "female",
-        "male"
-      ],
-      "types": [ "info","danger"]
-    },
-    "ventilator": {
-      "labels": [
-        "73%",
-        "26%"
-      ],
-      "series": [
-        44569,
-        16219
-      ],
-      "names": [
-        "Responders",
-        "Non-Responders"
-      ],
-      "types": [ "info","danger"]
-    }
+      ]
+    ],
+    names: ["Tesla Model S", "BMW 5 Series"],
+    types: ["info", "danger"]
+  },
+  gender: {
+    labels: [49, 51],
+    series: [30139, 30649],
+    names: ["female", "male"],
+    types: ["info", "danger"]
+  },
+  ventilator: {
+    labels: ["73%", "26%"],
+    series: [44569, 16219],
+    names: ["Responders", "Non-Responders"],
+    types: ["info", "danger"]
   }
+};
+
+var BASE_URL = "http://3.134.99.156";
+var PREDICT_API = BASE_URL + "/predict";
 
 module.exports = {
   style, // For notifications (App container and Notifications view)
@@ -750,6 +696,7 @@ module.exports = {
   optionsBar,
   responsiveBar,
   legendBar, // For charts (Dashboard view)
-  covengersData
+  covengersData,
+  BASE_URL,
+  PREDICT_API
 };
-
