@@ -75,7 +75,7 @@ class UserProfile extends Component {
                       ncols={["col-md-12"]}
                       properties={[
                         {
-                          label: "Adress",
+                          label: "Address",
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Home Adress",

@@ -162,17 +162,17 @@ class Recommendations extends Component {
                       ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
                         {
-                          label: "Age",
-                          type: "number",
+                          label: "Age Group",
+                          type: "select",
                           bsClass: "form-control",
-                          placeholder: "Age",
+                          placeholder: "Age Group",
                           defaultValue: this.state.age,
                           name: "age",
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
                           label: "Country",
-                          type: "text",
+                          type: "select",
                           bsClass: "form-control",
                           placeholder: "Country",
                           defaultValue: this.state.country,
