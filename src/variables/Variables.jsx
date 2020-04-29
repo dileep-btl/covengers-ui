@@ -678,7 +678,7 @@ var covengersData = {
   }
 };
 
-var BASE_URL = "http://3.134.99.156";
+var BASE_URL = "http://3.22.223.51";
 var DASHBOARD_API = BASE_URL + "/dashboard";
 var DASHBOARD_DETAIL_API = BASE_URL + "/dashboarddetail";
 var PREDICT_API = BASE_URL + "/predict";
