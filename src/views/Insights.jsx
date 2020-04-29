@@ -15,11 +15,12 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-import { thArray, tdArray } from "variables/Variables.jsx";
+import { thArray, tdArray,covengersData} from "variables/Variables.jsx";
 import { insightHeader, insightData } from "variables/Variables.jsx";
 import avatar from "assets/img/faces/face-3.jpg";
 import { CORRELATION_API } from "variables/Variables.jsx";
-
+const agegrouplist=covengersData.ageGroup.names;
+const genderlist=covengersData.gender.names;
 class Insights extends Component {
   constructor(props) {
     super(props);
@@ -122,6 +123,7 @@ class Insights extends Component {
                           placeholder: "Age Group",
                           defaultValue: "",
                           name: "ageGroup",
+                          optionlist:agegrouplist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
@@ -131,6 +133,7 @@ class Insights extends Component {
                           placeholder: "Gender",
                           defaultValue: "",
                           name: "gender",
+                          optionlist:genderlist,
                           onChange: this.handleDataChange.bind(this)
                         }
                       ]}

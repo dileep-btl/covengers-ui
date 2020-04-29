@@ -11,10 +11,10 @@ import {
 import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import { UserCard } from "components/UserCard/UserCard.jsx";
+import { covengersData } from "variables/Variables.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
-
 import avatar from "assets/img/faces/face-3.jpg";
-
+const countrylist=covengersData.country.labels;
 class UserProfile extends Component {
   render() {
     return (
@@ -99,6 +99,7 @@ class UserProfile extends Component {
                           type: "text",
                           bsClass: "form-control",
                           placeholder: "Country",
+                          optionlist:countrylist,
                           defaultValue: "Andrew"
                         },
                         {
