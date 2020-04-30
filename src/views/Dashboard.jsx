@@ -4,9 +4,6 @@ import {
   Grid,
   Row,
   Col,
-  ButtonGroup,
-  Button,
-  ButtonToolbar,
   DropdownButton,
   MenuItem
 } from "react-bootstrap";
@@ -15,8 +12,8 @@ import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { optionsBar, responsiveBar } from "variables/Variables.jsx";
 import { DASHBOARD_API, DASHBOARD_DETAIL_API } from "variables/Variables.jsx";
-const options = ["All","Chloroquin","Remdisivir","Favilavir","Plasma"];
-const names = ["all","chloroquin","remdisivir","favilavir","plasma"];
+const options = ["All","Chloroquine","Remdisivir","Favilavir","Plasma"];
+const names = ["all","chloroquine","remdisivir","favilavir","plasma"];
 
 class Dashboard extends Component {
   constructor(props) {
@@ -120,16 +117,15 @@ class Dashboard extends Component {
   }
 
   async handleFilter(eventKey) {
-   console.log(names[eventKey]);
+   //console.log(names[eventKey]);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // body: JSON.stringify({ drug: "all" })
       body: JSON.stringify({ drug: names[eventKey] })
     };
-    const url_dashboarddetail = "http://3.22.223.51/dashboarddetail";
     const response_dashboarddetail = await fetch(
-      url_dashboarddetail,
+      DASHBOARD_DETAIL_API,
       requestOptions
     );
 
@@ -268,7 +264,7 @@ class Dashboard extends Component {
                 </DropdownButton>
                 </div>
               </Col>
-              <Col md={7}>
+              {/* <Col md={7}>
                 <ButtonToolbar aria-label="Filter by Drug">
                   <ButtonGroup
                     bsStyle="warning"
@@ -318,7 +314,7 @@ class Dashboard extends Component {
                     </Button>
                   </ButtonGroup>
                 </ButtonToolbar>
-              </Col>
+              </Col> */}
             </Row>
             <br />
             <Row>
