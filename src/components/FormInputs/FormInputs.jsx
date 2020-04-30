@@ -17,8 +17,8 @@
 */
 import React, { Component } from "react";
 import { FormGroup, ControlLabel, FormControl, Row } from "react-bootstrap";
-//const options=[{value: 'select'}, {value: 'other'}]
-const options=["All","Chroloquin","Remdisivir","Favilavir","Plasma"]
+
+
 function FieldGroup({ label, ...props }) {
   return (
     <FormGroup>
@@ -50,8 +50,7 @@ export class FormInputs extends Component {
   render() {
     var row = [];
     for (var i = 0; i < this.props.ncols.length; i++) {
-      if(this.props.properties[i].label==="Gender"||this.props.properties[i].label==="Age Group"
-      ||this.props.properties[i].label==="Country"){
+      if(this.props.properties[i].type==="select"){
         row.push(
           <div key={i} className={this.props.ncols[i]}>
             <Dropdown {...this.props.properties[i]} />

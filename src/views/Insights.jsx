@@ -118,7 +118,7 @@ class Insights extends Component {
                       properties={[
                         {
                           label: "Age Group",
-                          type: "text",
+                          type: "select",
                           bsClass: "form-control",
                           placeholder: "Age Group",
                           defaultValue: "",
@@ -128,7 +128,7 @@ class Insights extends Component {
                         },
                         {
                           label: "Gender",
-                          type: "text",
+                          type: "select",
                           bsClass: "form-control",
                           placeholder: "Gender",
                           defaultValue: "",
