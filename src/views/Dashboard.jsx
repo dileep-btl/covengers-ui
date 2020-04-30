@@ -4,20 +4,23 @@ import {
   Grid,
   Row,
   Col,
-  ButtonGroup,
-  Button,
-  ButtonToolbar
+  DropdownButton,
+  MenuItem
 } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { optionsBar, responsiveBar } from "variables/Variables.jsx";
 import { DASHBOARD_API, DASHBOARD_DETAIL_API } from "variables/Variables.jsx";
+const options = ["All","Chloroquine","Remdisivir","Favilavir","Plasma"];
+const names = ["all","chloroquine","remdisivir","favilavir","plasma"];
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      selectedOption:options[0],
+     // selectedName:names[0],
       isLoaded: false,
       defaultFilter: "all",
 
@@ -45,8 +48,15 @@ class Dashboard extends Component {
       countryResponseData: {}
     };
     this.handleFilter = this.handleFilter.bind(this);
+    //this.handleSelect = this.handleSelect.bind(this);
   }
-
+  handleSelect(eventKey, event) {
+    //this.setState({selectedName:names[eventKey]});
+    //console.log(eventKey+"  "+names[eventKey]+"  "+this.state.selectedName);
+    this.setState({ selectedOption: options[eventKey] });
+    this.handleFilter(eventKey);
+    //console.log(eventKey+" "+ options[eventKey]+"  "+this.state.selectedOption);
+  }
   async componentDidMount() {
     const url_drugstats = DASHBOARD_API;
     const response = await fetch(url_drugstats);
@@ -106,25 +116,21 @@ class Dashboard extends Component {
     //console.log(this.state.countryResponseData);
   }
 
-  async handleFilter(event) {
-    //alert(event.target.name);
-
+  async handleFilter(eventKey) {
+   //console.log(names[eventKey]);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       // body: JSON.stringify({ drug: "all" })
-      body: JSON.stringify({ drug: event.target.name })
+      body: JSON.stringify({ drug: names[eventKey] })
     };
-
-    console.log(JSON.stringify({ drug: event.target.name }));
-    const url_dashboarddetail = "http://3.134.99.156/dashboarddetail";
     const response_dashboarddetail = await fetch(
-      url_dashboarddetail,
+      DASHBOARD_DETAIL_API,
       requestOptions
     );
 
     const data_dashboarddetail = await response_dashboarddetail.json();
-    console.log(JSON.stringify(data_dashboarddetail));
+    //console.log(JSON.stringify(data_dashboarddetail));
 
     this.setState({
       isLoaded: true,
@@ -244,7 +250,21 @@ class Dashboard extends Component {
                   <b>Filter by Drug:</b>
                 </div>
               </Col>
-              <Col md={7}>
+              <Col md={2}>
+                <div>
+                <DropdownButton id="dropdown-basic-button"  
+                title={this.state.selectedOption}  
+                onSelect={this.handleSelect.bind(this)}>
+                {options.map((opt, i) => (
+                <MenuItem key={i} eventKey={i} >
+                  {opt}
+                </MenuItem>
+                ))}
+                  
+                </DropdownButton>
+                </div>
+              </Col>
+              {/* <Col md={7}>
                 <ButtonToolbar aria-label="Filter by Drug">
                   <ButtonGroup
                     bsStyle="warning"
@@ -294,7 +314,7 @@ class Dashboard extends Component {
                     </Button>
                   </ButtonGroup>
                 </ButtonToolbar>
-              </Col>
+              </Col> */}
             </Row>
             <br />
             <Row>
