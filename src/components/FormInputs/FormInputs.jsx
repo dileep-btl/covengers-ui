@@ -18,7 +18,6 @@
 import React, { Component } from "react";
 import { FormGroup, ControlLabel, FormControl, Row } from "react-bootstrap";
 
-
 function FieldGroup({ label, ...props }) {
   return (
     <FormGroup>
@@ -28,21 +27,20 @@ function FieldGroup({ label, ...props }) {
   );
 }
 
-
-
-function Dropdown ({label,optionlist,...props}){
-  return(
+function Dropdown({ label, optionlist, ...props }) {
+  return (
     <FormGroup>
       <ControlLabel>{label}</ControlLabel>
-      <FormControl   
-        componentClass="select" placeholder="select">
-          <option value="">Select </option>
-          {
-           optionlist.map((option, index) => {
-           return (<option key={index} value={option}>{option}</option>)
-            })
-         }
-     </FormControl>
+      <FormControl componentClass="select" placeholder="select" {...props}>
+        <option value="">Select </option>
+        {optionlist.map((option, index) => {
+          return (
+            <option key={index} value={option}>
+              {option}
+            </option>
+          );
+        })}
+      </FormControl>
     </FormGroup>
   );
 }
@@ -50,19 +48,19 @@ export class FormInputs extends Component {
   render() {
     var row = [];
     for (var i = 0; i < this.props.ncols.length; i++) {
-      if(this.props.properties[i].type==="select"){
+      if (this.props.properties[i].type === "select") {
         row.push(
           <div key={i} className={this.props.ncols[i]}>
             <Dropdown {...this.props.properties[i]} />
           </div>
         );
+      } else {
+        row.push(
+          <div key={i} className={this.props.ncols[i]}>
+            <FieldGroup {...this.props.properties[i]} />
+          </div>
+        );
       }
-      else{
-      row.push(
-        <div key={i} className={this.props.ncols[i]}>
-          <FieldGroup {...this.props.properties[i]} />
-        </div>
-      );}
     }
     return <Row>{row}</Row>;
   }

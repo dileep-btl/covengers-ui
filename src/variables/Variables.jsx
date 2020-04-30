@@ -635,34 +635,7 @@ var covengersData = {
       "Switzerland",
       "United Kingdom",
       "United States"
-    ],
-    series: [
-      [
-        3140,
-        3226,
-        3060,
-        1346,
-        3125,
-        3162,
-        3143,
-        3150,
-        3279,
-        991,
-        3078,
-        1354,
-        3187,
-        3122,
-        3212,
-        3114,
-        3202,
-        3191,
-        3234,
-        3226,
-        3246
-      ]
-    ],
-    names: ["Tesla Model S", "BMW 5 Series"],
-    types: ["info", "danger"]
+    ]
   },
   gender: {
     labels: [49, 51],

@@ -6,18 +6,23 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { PREDICT_API } from "variables/Variables.jsx";
-import { optionsBar, responsiveBar,covengersData } from "variables/Variables.jsx";
-const countrylist=covengersData.country.labels;
-const agegrouplist=covengersData.ageGroup.names;
-const genderlist=covengersData.gender.names;
+import {
+  optionsBar,
+  responsiveBar,
+  covengersData
+} from "variables/Variables.jsx";
+const countrylist = covengersData.country.labels;
+const agegrouplist = covengersData.ageGroup.names;
+const genderlist = covengersData.gender.names;
 class Recommendations extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      /*
       isLoaded: false,
       age: 0,
       sugar: "",
-      
+
       weight: "",
       cough: 0,
       cold: 0,
@@ -30,7 +35,7 @@ class Recommendations extends Component {
       g6pd: 0,
       icu: 0,
       ventilator: 0,
-      chloroquin: 0,
+      chloroquine: 0,
       remdisivir: 0,
       favilavir: 0,
       plasma: 0,
@@ -39,6 +44,7 @@ class Recommendations extends Component {
       insightsHeaders: [],
       insightsValues: [],
       drugRecommendations: {}
+      */
     };
   }
 
@@ -62,26 +68,29 @@ class Recommendations extends Component {
       isLoaded: true,
       //dashboardData: data.responseString,
 
-      age: "",
-      sugar: "",
-      weight: "",
+      age: "60",
+      country: countrylist[3],
+      gender: genderlist[0],
+      weight: "200",
+
+      sugar: "80",
+      g6pd: true,
+      bp: 1,
       cough: 0,
       cold: 0,
       fever: 0,
       sorethroat: 0,
       bodyache: 0,
       fatigue: 0,
+
       bcg: 0,
-      bp: 0,
-      g6pd: 0,
       icu: 0,
       ventilator: 0,
-      chloroquin: 0,
+
+      chloroquine: 0,
       remdisivir: 0,
       favilavir: 0,
       plasma: 0,
-      country: "",
-      gender: "",
       insightsHeaders: [],
       insightsValues: [],
       drugRecommendations: {}
@@ -111,7 +120,7 @@ class Recommendations extends Component {
           g6pd: this.state.g6pd,
           icu: this.state.icu,
           ventilator: this.state.ventilator,
-          chloroquin: this.state.chloroquin,
+          chloroquine: this.state.chloroquin,
           remdisivir: this.state.remdisivir,
           favilavir: this.state.favilavir,
           plasma: this.state.plasma,
@@ -166,12 +175,11 @@ class Recommendations extends Component {
                       properties={[
                         {
                           label: "Age Group",
-                          type: "select",
+                          type: "number",
                           bsClass: "form-control",
-                          placeholder: "Age Group",
+                          placeholder: "Age",
                           defaultValue: this.state.age,
                           name: "age",
-                          optionlist:agegrouplist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
@@ -181,7 +189,7 @@ class Recommendations extends Component {
                           placeholder: "Country",
                           defaultValue: this.state.country,
                           name: "country",
-                          optionlist:countrylist,
+                          optionlist: countrylist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
@@ -191,7 +199,7 @@ class Recommendations extends Component {
                           placeholder: "Gender",
                           defaultValue: this.state.gender,
                           name: "gender",
-                          optionlist:genderlist,
+                          optionlist: genderlist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
@@ -236,8 +244,7 @@ class Recommendations extends Component {
                           label: "G6PD",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Age",
-                          defaultValue: this.state.age,
+                          defaultChecked: true,
                           name: "g6pd",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -246,7 +253,7 @@ class Recommendations extends Component {
                           type: "checkbox",
                           bsClass: "form-control",
                           placeholder: "High Blood Pressure",
-                          defaultValue: this.state.bp,
+                          defaultChecked: true,
                           name: "bp",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -254,8 +261,7 @@ class Recommendations extends Component {
                           label: "Cough",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Cough",
-                          defaultValue: this.state.cough,
+                          defaultChecked: true,
                           name: "cough",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -263,8 +269,7 @@ class Recommendations extends Component {
                           label: "Cold",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Cold",
-                          defaultValue: this.state.cold,
+                          defaultChecked: true,
                           name: "cold",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -272,8 +277,7 @@ class Recommendations extends Component {
                           label: "Fever",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Fever",
-                          defaultValue: this.state.fever,
+                          defaultChecked: true,
                           name: "fever",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -281,8 +285,7 @@ class Recommendations extends Component {
                           label: "Sore Throat",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Sore Throat",
-                          defaultValue: this.state.sorethroat,
+                          defaultChecked: false,
                           name: "sorethroat",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -290,8 +293,7 @@ class Recommendations extends Component {
                           label: "Bodyache",
                           type: "checkbox",
                           bsClass: "form-control",
-                          placeholder: "Bodyache",
-                          defaultValue: this.state.bodyache,
+                          defaultChecked: false,
                           name: "bodyache",
                           onChange: this.handleCheckboxChange.bind(this)
                         },
@@ -300,7 +302,7 @@ class Recommendations extends Component {
                           type: "checkbox",
                           bsClass: "form-control",
                           placeholder: "Fatigue",
-                          defaultValue: this.state.fatigue,
+                          defaultChecked: false,
                           name: "fatigue",
                           onChange: this.handleCheckboxChange.bind(this)
                         }

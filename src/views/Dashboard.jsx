@@ -1,26 +1,20 @@
 import React, { Component } from "react";
 import ChartistGraph from "react-chartist";
-import {
-  Grid,
-  Row,
-  Col,
-  DropdownButton,
-  MenuItem
-} from "react-bootstrap";
+import { Grid, Row, Col, DropdownButton, MenuItem } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { optionsBar, responsiveBar } from "variables/Variables.jsx";
 import { DASHBOARD_API, DASHBOARD_DETAIL_API } from "variables/Variables.jsx";
-const options = ["All","Chloroquine","Remdisivir","Favilavir","Plasma"];
-const names = ["all","chloroquine","remdisivir","favilavir","plasma"];
+const options = ["All", "Chloroquine", "Remdisivir", "Favilavir", "Plasma"];
+const names = ["all", "chloroquine", "remdisivir", "favilavir", "plasma"];
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedOption:options[0],
-     // selectedName:names[0],
+      selectedOption: options[0],
+      // selectedName:names[0],
       isLoaded: false,
       defaultFilter: "all",
 
@@ -117,7 +111,7 @@ class Dashboard extends Component {
   }
 
   async handleFilter(eventKey) {
-   //console.log(names[eventKey]);
+    //console.log(names[eventKey]);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -252,16 +246,17 @@ class Dashboard extends Component {
               </Col>
               <Col md={2}>
                 <div>
-                <DropdownButton id="dropdown-basic-button"  
-                title={this.state.selectedOption}  
-                onSelect={this.handleSelect.bind(this)}>
-                {options.map((opt, i) => (
-                <MenuItem key={i} eventKey={i} >
-                  {opt}
-                </MenuItem>
-                ))}
-                  
-                </DropdownButton>
+                  <DropdownButton
+                    id="dropdown-basic-button"
+                    title={this.state.selectedOption}
+                    onSelect={this.handleSelect.bind(this)}
+                  >
+                    {options.map((opt, i) => (
+                      <MenuItem key={i} eventKey={i}>
+                        {opt}
+                      </MenuItem>
+                    ))}
+                  </DropdownButton>
                 </div>
               </Col>
               {/* <Col md={7}>
@@ -343,7 +338,7 @@ class Dashboard extends Component {
                 <Card
                   statsIcon="fa"
                   title="Gender Distribution"
-                  category="Patients data by Age"
+                  category="Patients data by Gender"
                   //stats="Campaign sent 2 days ago"
                   content={
                     <div id="covengersGenderDistribution" className="ct-chart">
@@ -364,7 +359,7 @@ class Dashboard extends Component {
                 <Card
                   statsIcon="fa"
                   title="Drug Response"
-                  category="Patients data by Age"
+                  category="Patients data by Drug response"
                   //stats="Campaign sent 2 days ago"
                   content={
                     <div id="covengersGenderDistribution" className="ct-chart">
