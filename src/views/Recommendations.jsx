@@ -6,8 +6,10 @@ import { Card } from "components/Card/Card.jsx";
 import { FormInputs } from "components/FormInputs/FormInputs.jsx";
 import Button from "components/CustomButton/CustomButton.jsx";
 import { PREDICT_API } from "variables/Variables.jsx";
-import { optionsBar, responsiveBar } from "variables/Variables.jsx";
-
+import { optionsBar, responsiveBar,covengersData } from "variables/Variables.jsx";
+const countrylist=covengersData.country.labels;
+const agegrouplist=covengersData.ageGroup.names;
+const genderlist=covengersData.gender.names;
 class Recommendations extends Component {
   constructor(props) {
     super(props);
@@ -15,6 +17,7 @@ class Recommendations extends Component {
       isLoaded: false,
       age: 0,
       sugar: "",
+      
       weight: "",
       cough: 0,
       cold: 0,
@@ -162,21 +165,23 @@ class Recommendations extends Component {
                       ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
                         {
-                          label: "Age",
-                          type: "number",
+                          label: "Age Group",
+                          type: "select",
                           bsClass: "form-control",
-                          placeholder: "Age",
+                          placeholder: "Age Group",
                           defaultValue: this.state.age,
                           name: "age",
+                          optionlist:agegrouplist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
                           label: "Country",
-                          type: "text",
+                          type: "select",
                           bsClass: "form-control",
                           placeholder: "Country",
                           defaultValue: this.state.country,
                           name: "country",
+                          optionlist:countrylist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
@@ -186,6 +191,7 @@ class Recommendations extends Component {
                           placeholder: "Gender",
                           defaultValue: this.state.gender,
                           name: "gender",
+                          optionlist:genderlist,
                           onChange: this.handleDataChange.bind(this)
                         },
                         {
