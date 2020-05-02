@@ -12,7 +12,6 @@ import {
   covengersData
 } from "variables/Variables.jsx";
 const countrylist = covengersData.country.labels;
-const agegrouplist = covengersData.ageGroup.names;
 const genderlist = covengersData.gender.names;
 class Recommendations extends Component {
   constructor(props) {
@@ -66,8 +65,6 @@ class Recommendations extends Component {
   async componentDidMount() {
     this.setState({
       isLoaded: true,
-      //dashboardData: data.responseString,
-
       age: "60",
       country: countrylist[3],
       gender: genderlist[0],
@@ -174,7 +171,7 @@ class Recommendations extends Component {
                       ncols={["col-md-3", "col-md-3", "col-md-3", "col-md-3"]}
                       properties={[
                         {
-                          label: "Age Group",
+                          label: "Age",
                           type: "number",
                           bsClass: "form-control",
                           placeholder: "Age",
@@ -392,5 +389,4 @@ class Recommendations extends Component {
     }
   }
 }
-
 export default Recommendations;

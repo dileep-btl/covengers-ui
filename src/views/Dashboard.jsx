@@ -4,10 +4,15 @@ import { Grid, Row, Col, DropdownButton, MenuItem } from "react-bootstrap";
 
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
-import { optionsBar, responsiveBar } from "variables/Variables.jsx";
-import { DASHBOARD_API, DASHBOARD_DETAIL_API } from "variables/Variables.jsx";
+import {
+  colorCodes,
+  DASHBOARD_API,
+  DASHBOARD_DETAIL_API
+} from "variables/Variables.jsx";
+import { Bar, Pie, Doughnut } from "react-chartjs-2";
 const options = ["All", "Chloroquine", "Remdisivir", "Favilavir", "Plasma"];
-const names = ["all", "chloroquine", "remdisivir", "favilavir", "plasma"];
+const names = ["all", "chloroquin", "remdisivir", "favilavir", "plasma"];
+const legendColors = colorCodes.codes;
 
 class Dashboard extends Component {
   constructor(props) {
@@ -27,19 +32,31 @@ class Dashboard extends Component {
       PatientsWithDrugsLabel: "",
       patientsWithDrugsLegend: "",
       PatientsWithDrugs: 0,
+
+      //Drug Distribution Data
       drugUsage: {},
+      drugUsageChartData: {},
 
       //Age Distribution Data
       ageDistributionData: {},
+      ageDistributionChartData: {},
 
       //Gender Distribution Data
       genderDistributionData: {},
+      genderDistributionChartData: {},
+
+      //BCG Distribution Data
+      bcgDistributionData: {},
+      bcgDistributionChartData: {},
 
       //Drug Response Data
       drugResponseData: {},
 
-      //Drug Response Data
-      countryResponseData: {}
+      //Country Response Data
+      countryResponseData: {},
+      countryResponseChartData: {},
+
+      legendPosition: "bottom"
     };
     this.handleFilter = this.handleFilter.bind(this);
     //this.handleSelect = this.handleSelect.bind(this);
@@ -90,20 +107,78 @@ class Dashboard extends Component {
 
       //Set Drug Distribution Data
       drugUsage: data.responseString.drugUse,
+      drugUsageChartData: {
+        labels: data.responseString.drugUse.legend,
+        datasets: [
+          {
+            data: data.responseString.drugUse.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
       //Set Age Distribution Data
       ageDistributionData: data_dashboarddetail.responseString.ageGroup,
+      ageDistributionChartData: {
+        labels: data_dashboarddetail.responseString.ageGroup.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.ageGroup.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
       //Set Gender Distribution Data
       genderDistributionData: data_dashboarddetail.responseString.gender,
+      genderDistributionChartData: {
+        labels: data_dashboarddetail.responseString.gender.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.gender.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
-      //Set Gender Distribution Data
+      //Set BCG Distribution Data
+      bcgDistributionData: data_dashboarddetail.responseString.bcg,
+      bcgDistributionChartData: {
+        labels: data_dashboarddetail.responseString.bcg.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.bcg.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
+
+      //Set Ventilator Distribution Data
       drugResponseData: data_dashboarddetail.responseString.ventilator,
+      drugResponseChartData: {
+        labels: data_dashboarddetail.responseString.ventilator.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.ventilator.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
-      //Set Gender Distribution Data
+      //Set Country Distribution Data
       countryResponseData: {
         labels: data_dashboarddetail.responseString.country.legend,
         series: [data_dashboarddetail.responseString.country.series]
+      },
+
+      countryResponseChartData: {
+        labels: data_dashboarddetail.responseString.country.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.country.series,
+            backgroundColor: legendColors
+          }
+        ]
       }
     });
 
@@ -129,18 +204,55 @@ class Dashboard extends Component {
     this.setState({
       isLoaded: true,
 
-      //dashboardData: data.responseString,
-
       //Set Age Distribution Data
       ageDistributionData: data_dashboarddetail.responseString.ageGroup,
+      ageDistributionChartData: {
+        labels: data_dashboarddetail.responseString.ageGroup.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.ageGroup.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
       //Set Gender Distribution Data
       genderDistributionData: data_dashboarddetail.responseString.gender,
+      genderDistributionChartData: {
+        labels: data_dashboarddetail.responseString.gender.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.gender.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
-      //Set Gender Distribution Data
+      //Set BCG Vaccination Distribution Data
+      bcgDistributionData: data_dashboarddetail.responseString.bcg,
+      bcgDistributionChartData: {
+        labels: data_dashboarddetail.responseString.bcg.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.bcg.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
+
+      //Set Drug Response Distribution Data
       drugResponseData: data_dashboarddetail.responseString.ventilator,
+      drugResponseChartData: {
+        labels: data_dashboarddetail.responseString.ventilator.legend,
+        datasets: [
+          {
+            data: data_dashboarddetail.responseString.ventilator.series,
+            backgroundColor: legendColors
+          }
+        ]
+      },
 
-      //Set Gender Distribution Data
+      //Set Country Distribution Data
       countryResponseData: {
         labels: data_dashboarddetail.responseString.country.legend,
         series: [data_dashboarddetail.responseString.country.series]
@@ -164,6 +276,7 @@ class Dashboard extends Component {
   createLegendNew(json) {
     var legend = [];
     var types = ["danger", "warning", "info", "error", ""];
+    //var types = ["#6188e2", "#a748ca", "warning", "error", "danger"];
     for (var i = 0; i < json["legend"].length; i++) {
       var type = "fa fa-circle text-" + types[i];
       legend.push(<i className={type} key={i} />);
@@ -194,7 +307,7 @@ class Dashboard extends Component {
                   statsText={this.state.totalPatientsLabel}
                   statsValue={this.state.totalPatients}
                   statsIcon={<i className="fa fa-users" />}
-                  statsIconText="Updated now"
+                  statsIconText="Total patients"
                 />
               </Col>
               <Col lg={4} sm={6}>
@@ -224,6 +337,7 @@ class Dashboard extends Component {
                   title="Drug Distribution"
                   category="Drug Distribution data"
                   //stats="Campaign sent 2 days ago"
+                  /*
                   content={
                     <div id="covengersChartPreferences" className="ct-chart">
                       <ChartistGraph data={this.state.drugUsage} type="Pie" />
@@ -232,6 +346,29 @@ class Dashboard extends Component {
                   legend={
                     <div className="legend">
                       {this.createLegendNew(this.state.drugUsage)}
+                    </div>
+                  }
+                  */
+                  content={
+                    <div id="covengersChartPreferences" className="ct-chart">
+                      <Doughnut
+                        data={this.state.drugUsageChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: true,
+                            position: this.state.legendPosition
+                          },
+                          label: {
+                            display: true
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
                     </div>
                   }
                 />
@@ -259,66 +396,16 @@ class Dashboard extends Component {
                   </DropdownButton>
                 </div>
               </Col>
-              {/* <Col md={7}>
-                <ButtonToolbar aria-label="Filter by Drug">
-                  <ButtonGroup
-                    bsStyle="warning"
-                    size="lg"
-                    className="mr-2"
-                    aria-label="Filter by Drug"
-                  >
-                    <Button
-                      name="all"
-                      bsStyle="default"
-                      type="submit"
-                      onClick={this.handleFilter}
-                    >
-                      All
-                    </Button>
-                    <Button
-                      name="chloroquin"
-                      bsStyle="default"
-                      type="submit"
-                      onClick={this.handleFilter}
-                    >
-                      Chloroquin
-                    </Button>
-                    <Button
-                      name="remdisivir"
-                      bsStyle="default"
-                      type="submit"
-                      onClick={this.handleFilter}
-                    >
-                      Remdisivir
-                    </Button>
-                    <Button
-                      name="favilavir"
-                      bsStyle="default"
-                      type="submit"
-                      onClick={this.handleFilter}
-                    >
-                      Favilavir
-                    </Button>
-                    <Button
-                      name="plasma"
-                      bsStyle="default"
-                      type="submit"
-                      onClick={this.handleFilter}
-                    >
-                      Plasma
-                    </Button>
-                  </ButtonGroup>
-                </ButtonToolbar>
-              </Col> */}
             </Row>
             <br />
             <Row>
-              <Col md={4}>
+              <Col md={3}>
                 <Card
                   statsIcon="fa"
                   title="Age Distribution"
                   category="Patients data by Age"
                   //stats="Campaign sent 2 days ago"
+                  /*
                   content={
                     <div id="covengersAgeDistribution" className="ct-chart">
                       <ChartistGraph
@@ -332,14 +419,38 @@ class Dashboard extends Component {
                       {this.createLegendNew(this.state.ageDistributionData)}
                     </div>
                   }
+                  */
+                  content={
+                    <div id="covengersAgeDistribution" className="ct-chart">
+                      <Pie
+                        data={this.state.ageDistributionChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: true,
+                            position: this.state.legendPosition
+                          },
+                          label: {
+                            display: true
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
+                    </div>
+                  }
                 />
               </Col>
-              <Col md={4}>
+              <Col md={3}>
                 <Card
                   statsIcon="fa"
                   title="Gender Distribution"
                   category="Patients data by Gender"
                   //stats="Campaign sent 2 days ago"
+                  /*
                   content={
                     <div id="covengersGenderDistribution" className="ct-chart">
                       <ChartistGraph
@@ -353,14 +464,39 @@ class Dashboard extends Component {
                       {this.createLegendNew(this.state.genderDistributionData)}
                     </div>
                   }
+                  */
+                  content={
+                    <div id="covengersGenderDistribution" className="ct-chart">
+                      <Pie
+                        data={this.state.genderDistributionChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: true,
+                            position: this.state.legendPosition
+                          },
+                          label: {
+                            display: true
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
+                    </div>
+                  }
                 />
               </Col>
-              <Col md={4}>
+
+              <Col md={3}>
                 <Card
                   statsIcon="fa"
                   title="Drug Response"
                   category="Patients data by Drug response"
                   //stats="Campaign sent 2 days ago"
+                  /*
                   content={
                     <div id="covengersGenderDistribution" className="ct-chart">
                       <ChartistGraph
@@ -374,6 +510,75 @@ class Dashboard extends Component {
                       {this.createLegendNew(this.state.drugResponseData)}
                     </div>
                   }
+                  */
+                  content={
+                    <div id="covengersDrugDistribution" className="ct-chart">
+                      <Pie
+                        data={this.state.drugResponseChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: true,
+                            position: this.state.legendPosition
+                          },
+                          label: {
+                            display: true
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
+                    </div>
+                  }
+                />
+              </Col>
+              <Col md={3}>
+                <Card
+                  statsIcon="fa"
+                  title="BCG Vaccination"
+                  category="Patients vaccinated with BCG"
+                  //stats="Campaign sent 2 days ago"
+                  /*
+                  content={
+                    <div id="covengersGenderDistribution" className="ct-chart">
+                      <ChartistGraph
+                        data={this.state.bcgDistributionData}
+                        type="Pie"
+                      />
+                    </div>
+                  }
+                  legend={
+                    <div className="legend">
+                      {this.createLegendNew(this.state.bcgDistributionData)}
+                    </div>
+                  }
+                  */
+
+                  content={
+                    <div id="covengersGenderDistribution" className="ct-chart">
+                      <Pie
+                        data={this.state.bcgDistributionChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: true,
+                            position: this.state.legendPosition
+                          },
+                          label: {
+                            display: true
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
+                    </div>
+                  }
                 />
               </Col>
             </Row>
@@ -382,24 +587,40 @@ class Dashboard extends Component {
               <Col md={12}>
                 <Card
                   statsIcon="fa"
-                  title="Country wise Distribution"
+                  title="Country Wise Distribution"
                   category="Patients data by country"
                   //stats="Campaign sent 2 days ago"
                   content={
                     <div id="covengersBarChartPreferences" className="ct-chart">
+                      {/*}
                       <ChartistGraph
                         data={this.state.countryResponseData}
                         type="Bar"
                         options={optionsBar}
                         responsiveOptions={responsiveBar}
                       />
+
+                      legend={
+                        <div className="legend">{this.createLegend(covengersData.country)}</div>
+                      }
+                      */}
+                      <Bar
+                        data={this.state.countryResponseChartData}
+                        options={{
+                          title: {
+                            display: false,
+                            text: "",
+                            fontSize: 25
+                          },
+                          legend: {
+                            display: false,
+                            position: this.props.legendPosition
+                          },
+                          maintainAspectRatio: false
+                        }}
+                      />
                     </div>
                   }
-                  /*
-                legend={
-                  <div className="legend">{this.createLegend(covengersData.country)}</div>
-                }
-                */
                 />
               </Col>
             </Row>

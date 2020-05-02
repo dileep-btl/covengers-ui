@@ -586,33 +586,10 @@ var covengersData = {
     labels: ["10%", "30%", "20%", "40%"],
     series: [10, 30, 20, 40],
     names: ["0-18", "18-40", "40-60", ">60"],
-    types: ["danger", "warning", "info", ""]
+    //types: ["danger", "warning", "info", ""]
+    types: ["#a748ca", "#6188e2"]
   },
   country: {
-    /*
-      "labels1": [
-        5.165493189445285,
-        5.306968480621175,
-        5.033888267421202,
-        2.214252813055208,
-        5.14081726656577,
-        5.2016845430019085,
-        5.1704283740211885,
-        5.181943804698295,
-        5.3941567414621305,
-        1.630255971573337,
-        5.063499374876621,
-        2.227413305257617,
-        5.242811081134435,
-        5.135882081989866,
-        5.28393761926696,
-        5.122721589787458,
-        5.26748700401395,
-        5.249391327235639,
-        5.320128972823584,
-        5.306968480621175,
-        5.3398697111271956
-      ], */
     labels: [
       "Australia",
       "Brazil",
@@ -651,11 +628,44 @@ var covengersData = {
   }
 };
 
+var colorCodes = {
+  codes: [
+    "rgba(126, 12, 57, 0.7)",
+    "rgba(150, 85, 175, 0.8)",
+    "rgba(67, 173, 66, 0.6)",
+    "rgba(247, 52, 155, 0.7)",
+    "rgba(202, 127, 133, 0.7)",
+    "rgba(163, 142, 74, 0.6)",
+    "rgba(152, 241, 209, 0.5)",
+    "rgba(72, 28, 215, 0.3)",
+    "rgba(255, 64, 65, 0.6)",
+    "rgba(58, 154, 145, 0.4)",
+    "rgba(77, 253, 64, 0.4)",
+    "rgba(180, 148, 37, 0.7)",
+    "rgba(121, 176, 31, 0.4)",
+    "rgba(245, 81, 175, 0.8)",
+    "rgba(230, 57, 161, 0.6)",
+    "rgba(132, 193, 88, 0.4)",
+    "rgba(134, 137, 171, 0.4)",
+    "rgba(171, 46, 18, 0.5)",
+    "rgba(150, 204, 18, 0.6)",
+    "rgba(154, 103, 207, 1)",
+    "rgba(12, 40, 73, 0.8)",
+    "rgba(182, 6, 48, 0.8)",
+    "rgba(54, 162, 235, 0.6)",
+    "rgba(255, 206, 86, 0.6)",
+    "rgba(75, 192, 192, 0.6)",
+    "rgba(153, 102, 255, 0.6)",
+    "rgba(255, 159, 64, 0.4)",
+    "rgba(255, 99, 132, 0.6)"
+  ]
+};
+
 var BASE_URL = "http://3.22.223.51";
 var DASHBOARD_API = BASE_URL + "/dashboard";
 var DASHBOARD_DETAIL_API = BASE_URL + "/dashboarddetail";
 var PREDICT_API = BASE_URL + "/predict";
-var CORRELATION_API = BASE_URL + "/correlation";
+var CORRELATION_API = BASE_URL + "/insight";
 
 module.exports = {
   style, // For notifications (App container and Notifications view)
@@ -677,5 +687,6 @@ module.exports = {
   PREDICT_API,
   CORRELATION_API,
   DASHBOARD_API,
-  DASHBOARD_DETAIL_API
+  DASHBOARD_DETAIL_API,
+  colorCodes
 };
