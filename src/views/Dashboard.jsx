@@ -533,8 +533,9 @@ class Dashboard extends Component {
                             display: true,
                             position: this.state.legendPosition
                           },
-                          label: {
-                            display: true
+                          labels: {
+                            display: true,
+                            render: "percentage"
                           },
                           maintainAspectRatio: false
                         }}
