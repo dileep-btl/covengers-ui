@@ -33,7 +33,7 @@ class Insights extends Component {
       bcg: 0,
       insightData: [
         ["Chloroquine", 0],
-        ["Remdisivir", 0],
+        ["Remdesivir", 0],
         ["Favilavir", 0],
         ["Plasma", 0]
       ],

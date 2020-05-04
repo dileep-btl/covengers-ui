@@ -364,7 +364,15 @@ class Dashboard extends Component {
                             position: this.state.legendPosition
                           },
                           label: {
-                            display: true
+                            display: true,
+                            render: "percentage",
+                            fontColor: ["green", "white", "red"],
+                            precision: 2
+                          },
+                          labels: {
+                            render: "percentage",
+                            //fontColor: ["green", "white", "red"],
+                            precision: 2
                           },
                           maintainAspectRatio: false
                         }}
